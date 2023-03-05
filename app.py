@@ -117,7 +117,7 @@ def nas100_data():
     for key, value in all_data.items():
         price += key + ': ' + value + '\n'
     print(f'NASDAQ100 Price List\n{price}')
-    return price
+    return {'price': price}
 
 @app.get('/dowjones')
 def us30_data():
@@ -140,7 +140,7 @@ def us30_data():
     for key, value in all_data.items():
         price += key + ': ' + value + '\n'
     print(f'US30 Price List!!\n{price}')
-    return price
+    return {'price': price}
 
 
 @app.get('/german40')
@@ -164,7 +164,7 @@ def ger30_data():
     for key, value in all_data.items():
         price += key + ': ' + value + '\n'
     print(f'GER30 Price List\n{price}')
-    return price
+    return {'price': price}
 
 
 if __name__ == '__main__':
