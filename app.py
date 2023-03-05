@@ -21,9 +21,6 @@ ger30model=pickle.load(ger30pkl)
 def index():
     return {'message': 'Hello Thabang'}
 
-# @app.get('/{name}')
-# def get_name(name: str):
-#     return {'message': f'Weclome back Sir,{name}'}
 
 # NAS100 model api
 @app.post('/nas100')
