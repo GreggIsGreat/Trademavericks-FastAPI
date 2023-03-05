@@ -140,7 +140,7 @@ def us30_data():
     for key, value in all_data.items():
         price += key + ': ' + value + '\n'
     print(f'US30 Price List!!\n{price}')
-    return 'price'
+    return price
 
 
 @app.get('/german40')
