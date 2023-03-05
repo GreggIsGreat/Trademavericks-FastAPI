@@ -4,6 +4,8 @@ import numpy as np
 import pickle
 import pandas as pd
 from price_info import NAS100,US30,GER30
+import requests
+from bs4 import BeautifulSoup
 
 app = FastAPI()
 pkl_in = open("nas100.pkl", 'rb')
@@ -92,6 +94,76 @@ def get_cat(open: float, volume: float, low: float, high: float):
     anticipated = ger30model.predict([[open, volume, low, high]])
     return {'prediction': anticipated}
 
+
+#    Price Information
+@app.get('/nasdaq')
+def nas100_data():
+    url = 'https://www.cnbc.com/quotes/%40ND.1'
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+
+    prices = soup.find_all(class_="Summary-value")
+    open_price = prices[0].text
+    low_price = prices[2].text
+    high_price = prices[1].text
+    volume = soup.find(class_="QuoteStrip-volume").text
+    all_data = {
+        'Open': open_price,
+        'Volume': volume,
+        'Daily Low': low_price,
+        'Daily High': high_price
+    }
+    price = ''
+    for key, value in all_data.items():
+        price += key + ': ' + value + '\n'
+    print(f'NASDAQ100 Price List\n{price}')
+    return price
+
+@app.get('/dowjones')
+def us30_data():
+    url = 'https://www.cnbc.com/quotes/%40DJ.1'
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+
+    prices = soup.find_all(class_="Summary-value")
+    open_price = prices[0].text
+    low_price = prices[2].text
+    high_price = prices[1].text
+    volume = soup.find(class_="QuoteStrip-volume").text
+    all_data = {
+        'Open': open_price,
+        'Volume': volume,
+        'Daily Low': low_price,
+        'Daily High': high_price
+    }
+    price = ''
+    for key, value in all_data.items():
+        price += key + ': ' + value + '\n'
+    print(f'US30 Price List!!\n{price}')
+    return price
+
+@app.get('/german40')
+def ger30_data():
+    url = 'https://www.cnbc.com/quotes/.GDAXI'
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+
+    prices = soup.find_all(class_="Summary-value")
+    open_price = prices[0].text
+    low_price = prices[2].text
+    high_price = prices[1].text
+    volume = soup.find(class_="QuoteStrip-volume").text
+    all_data = {
+        'Open': open_price,
+        'Volume': volume,
+        'Daily Low': low_price,
+        'Daily High': high_price
+    }
+    price = ''
+    for key, value in all_data.items():
+        price += key + ': ' + value + '\n'
+    print(f'GER30 Price List\n{price}')
+    return price
 
 if __name__ == '__main__':
     uvicorn.run(app, host='127.0.0.1', port=7000)
