@@ -119,8 +119,6 @@ def nas100_data():
     print(f'NASDAQ100 Price List\n{price}')
     return price
 
-nas100_data()
-
 @app.get('/dowjones')
 def us30_data():
     url = 'https://www.cnbc.com/quotes/%40DJ.1'
@@ -144,7 +142,6 @@ def us30_data():
     print(f'US30 Price List!!\n{price}')
     return price
 
-us30_data()
 
 @app.get('/german40')
 def ger30_data():
@@ -169,7 +166,6 @@ def ger30_data():
     print(f'GER30 Price List\n{price}')
     return price
 
-ger30_data()
 
 if __name__ == '__main__':
     uvicorn.run(app, host='127.0.0.1', port=7000)
